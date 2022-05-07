@@ -213,7 +213,7 @@ There are two steps:
 
 1. Edit this README file to contain the RUM query you created above right here:
     ```
-    CREATE INDEX ...
+    CREATE INDEX metahtml_idx_rum ON metahtml USING rum(content);
     ```
 
 1. Edit this README file with the results of the following queries in psql.
@@ -222,16 +222,128 @@ There are two steps:
     1. This query shows the total number of webpages loaded:
        ```
        select count(*) from metahtml;
+        count
+       --------
+        329295
+       (1 row)
        ```
 
     1. This query shows the number of webpages loaded / hour:
        ```
        select * from metahtml_rollup_insert order by insert_hour desc limit 100;
+        hll_count |  url   | hostpathquery | hostpath |  host  |      insert_hour
+       ----+--------+---------------+----------+--------+------------------------
+         5 | 244104 |        231770 |   218455 | 122553 | 2022-05-07 20:00:00+00
+         2 |  85926 |         84263 |    80174 |  49176 | 2022-05-06 19:00:00+00
+         2 |   6954 |          7147 |     7049 |   5452 | 2022-05-06 18:00:00+00
        ```
 
     1. This query shows the hostnames that you have downloaded the most webpages from:
        ```
-       select * from metahtml_rollup_host order by hostpath desc limit 100;
+       select * from metahtml_rollup_host2 order by hostpath desc limit 100;
+        url | hostpathquery | hostpath |            host
+       -----+---------------+----------+-----------------------------
+         90 |            90 |       89 | com,wsj)
+         79 |            79 |       79 | com,foodily)
+         79 |            79 |       79 | org,wikipedia,en)
+         78 |            78 |       78 | com,genealogy)
+         98 |            98 |       78 | com,mlb)
+         75 |            75 |       75 | com,jabong)
+         73 |            73 |       73 | org,repec,ideas)
+         73 |            73 |       73 | com,pandora)
+         70 |            70 |       70 | com,funnyjunk)
+         68 |            68 |       67 | com,imdb)
+         66 |            66 |       65 | com,funnyordie)
+         65 |            65 |       65 | com,grabcad)
+         64 |            64 |       64 | com,imgur)
+         64 |            64 |       64 | com,businessinsider)
+         63 |            63 |       63 | com,upi)
+         62 |            62 |       62 | net,sourceforge)
+         62 |            62 |       62 | com,fixya)
+         62 |            62 |       62 | me,about)
+         61 |            61 |       61 | com,teacherspayteachers)
+         61 |            61 |       61 | com,mobygames)
+         61 |            61 |       61 | org,wikipedia,de)
+         60 |            60 |       60 | com,bleacherreport)
+         60 |            60 |       60 | com,thestreet)
+         60 |            60 |       60 | com,ign)
+         60 |            60 |       60 | com,realself)
+         68 |            68 |       60 | com,iconfinder)
+         59 |            59 |       59 | com,aceshowbiz)
+         59 |            59 |       59 | com,etsy)
+         58 |            58 |       58 | org,worldcat)
+         58 |            58 |       58 | com,dx)
+         57 |            57 |       57 | de,welt)
+         66 |            66 |       57 | com,freecode)
+         56 |            56 |       56 | com,cargurus)
+         56 |            56 |       56 | com,aol)
+         56 |            56 |       56 | com,vimeo)
+         56 |            56 |       56 | org,apache,mail-archives)
+         56 |            56 |       56 | com,sherdog)
+         56 |            56 |       56 | com,juegostin)
+         57 |            57 |       56 | com,economist)
+         56 |            56 |       55 | com,iheart)
+         55 |            55 |       55 | uk,co,tripadvisor)
+         55 |            55 |       55 | com,bandsintown)
+         55 |            55 |       55 | com,ebaumsworld)
+         55 |            55 |       55 | it,tripadvisor)
+         54 |            54 |       54 | cl,tripadvisor)
+         54 |            54 |       54 | com,remax)
+         54 |            54 |       54 | com,experienceproject)
+         54 |            54 |       54 | org,freesound)
+         54 |            54 |       54 | com,lyricsmode)
+         54 |            54 |       54 | ru,primanota)
+         53 |            53 |       53 | com,deseretnews)
+         53 |            53 |       53 | com,hubpages)
+         55 |            55 |       53 | com,cafemom)
+         53 |            53 |       53 | nl,tripadvisor)
+         53 |            53 |       53 | com,dailymotion)
+         52 |            52 |       52 | br,com,tripadvisor)
+         52 |            52 |       52 | ru,myshared)
+         52 |            52 |       52 | com,groupon)
+         52 |            52 |       52 | com,expedia)
+         52 |            52 |       52 | org,wikipedia,es)
+         52 |            52 |       52 | org,wikidata)
+         52 |            52 |       52 | org,debian,lists)
+         52 |            52 |       52 | com,modelmayhem)
+         52 |            52 |       52 | tw,com,tripadvisor)
+         52 |            52 |       52 | com,6pm)
+         52 |            52 |       52 | com,gamefaqs)
+         51 |            51 |       51 | com,sinemalar)
+         51 |            51 |       51 | com,skysports)
+         51 |            51 |       51 | com,ecampus)
+         51 |            51 |       51 | gov,loc,chroniclingamerica)
+         54 |            54 |       51 | com,imagekind)
+         51 |            51 |       51 | com,unsplash)
+         51 |            51 |       51 | com,testfreaks)
+         51 |            51 |       51 | com,epicsports,football)
+         51 |            51 |       51 | org,wikipedia,fr)
+         50 |            50 |       50 | com,applecentral,forums)
+         50 |            50 |       50 | com,beau-coup)
+         50 |            50 |       50 | com,tumblr)
+         50 |            50 |       50 | com,thesaurus)
+         56 |            56 |       50 | com,godlikeproductions)
+         53 |            53 |       50 | net,behance)
+         50 |            50 |       50 | com,issuu)
+         49 |            49 |       49 | to,vipergirls)
+         49 |            49 |       49 | com,csmonitor)
+         56 |            56 |       49 | com,starizona)
+         49 |            49 |       49 | net,womany)
+         49 |            49 |       49 | com,eventbrite)
+         49 |            49 |       49 | com,instructables)
+         58 |            58 |       49 | com,snagajob)
+         49 |            49 |       49 | fm,last)
+         48 |            48 |       48 | de,hifi-forum)
+         48 |            48 |       48 | com,pinterest)
+         48 |            48 |       48 | com,pinterest,es)
+         48 |            48 |       48 | org,wikipedia,pt)
+         48 |            48 |       48 | my,com,tripadvisor)
+         48 |            48 |       48 | com,appbrain)
+         55 |            55 |       48 | com,dpreview)
+         48 |            48 |       48 | com,marketwatch)
+         48 |            48 |       48 | com,movies)
+         48 |            48 |       48 | com,jezebel)
+       (100 rows)
        ```
 
 1. Take a screenshot of an interesting search result.
